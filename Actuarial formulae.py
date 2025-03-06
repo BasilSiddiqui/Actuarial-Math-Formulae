@@ -31,3 +31,10 @@ def FV (P,i,n): # Future value
     return P*(numerator/denominator)
 
 FV(25000, 0.02, 10)
+
+def PV_growing_annuity (P,i,k,n):
+    numerator = 1 - ((1+k)/(1+i))**n
+    denominator = i - k
+    return P*(numerator/denominator)
+
+PV_growing_annuity(22000000, ((1.11)**(1/12))-1, 0.015, 24)
