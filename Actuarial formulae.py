@@ -1,40 +1,76 @@
+'''
+    Parameters:
+        P (float): Initial payment amount.
+        i (float): Interest rate per period.
+        g (float): Growth rate of payments.
+        n (int): Number of periods.
+        m (int): Deferral periods.
+        due (bool): If True, calculates annuity due; otherwise, annuity immediate.
+'''
+
 def Simple_Interest (P,i,n):
     return P*(1+(i*n))
 
-Simple_Interest(100,0.1, 5)
 
 def Compound_Interest (P,i,n):
     return P*(1+i)**n
 
-Compound_Interest(100, 0.1, 5)
 
-def V (i): # Discount factor
-    return 1/(1+i)
+def v(i): # Discount factor
+    return 1 / (1 + i)
 
-V(0.1)
 
-def D (i): # Discount rate
-    return i/(1+i)
+def d(i): # Discount rate
+    return i / (1 + i)
 
-D(0.1)
 
-def PV (P,i,n): # Present value
-    numerator = 1 - V(i)**n
+def PV_annuity(P, i, n, due=False):
+    if i == 0:
+        return P * n  # Handle zero interest rate case
+    
+    numerator = 1 - v(i)**n
     denominator = i
-    return P*(numerator/denominator)
+    factor = (1 + i) if due else 1  # Adjust for annuity-due
+    return P * (numerator / denominator) * factor
 
-PV(1500,0.08,6)
 
-def FV (P,i,n): # Future value
-    numerator = ((1+i)**n)-1
+def FV_annuity(P, i, n, due=False):
+    if i == 0:
+        return P * n  # Handle zero interest rate case
+    
+    numerator = (1 + i)**n - 1
     denominator = i
-    return P*(numerator/denominator)
+    factor = (1 + i) if due else 1  # Adjust for annuity-due
+    return P * (numerator / denominator) * factor
 
-FV(25000, 0.02, 10)
 
-def PV_growing_annuity (P,i,k,n):
-    numerator = 1 - ((1+k)/(1+i))**n
-    denominator = i - k
-    return P*(numerator/denominator)
+def PV_growing_annuity(P, i, g, n):
+    if i == g:
+        return P * n  # Handle case where i = g
+    
+    numerator = 1 - ((1 + g) / (1 + i))**n
+    denominator = i - g
+    return P * (numerator / denominator)
 
-PV_growing_annuity(22000000, ((1.11)**(1/12))-1, 0.015, 24)
+
+def PV_perpetuity(P, i, due=False):
+    return P / i if not due else P + (P / i)
+
+
+def Perpetuity_value(P, i, t, due=False):
+    if i == 0:
+        return float('inf')  # If interest is 0, perpetuity is infinite
+    
+    factor = (1 + i) ** (t + 1) if due else (1 + i) ** t
+    return (P / i) * factor
+
+
+def PV_deferred_annuity(P, i, n, m, due=False):
+    return (v(i)**m) * PV_annuity(P, i, n, due)
+
+
+def FV_deferred_annuity(P, i, n, m, due=False):
+    return ((1 + i)**m) * FV_annuity(P, i, n, due)
+
+
+Perpetuity_value(1000, 0.1, 10)
