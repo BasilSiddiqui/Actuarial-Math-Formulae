@@ -1,12 +1,21 @@
 '''
     Parameters:
         P (float): Initial payment amount.
+        L (float): Loan amount (initial principal).
+        X (float): Fixed annual repayment amount.
         i (float): Interest rate per period.
+        n1 (int): Number of periods in the given interest rate (e.g., 12 for annual).
+        n2 (int): Number of periods in the target interest rate (e.g., 1 for monthly).
         g (float): Growth rate of payments.
         n (int): Number of periods.
         m (int): Deferral periods.
+        r (int): Repayment number for capital/interest breakdown.
         due (bool): If True, calculates annuity due; otherwise, annuity immediate.
 '''
+
+
+'''Interest'''
+
 
 def Simple_Interest (P,i,n):
     return P*(1+(i*n))
@@ -14,6 +23,13 @@ def Simple_Interest (P,i,n):
 
 def Compound_Interest (P,i,n):
     return P*(1+i)**n
+
+
+def Convert_interest (i,n1,n2):
+    return (1 + i) ** (n2 / n1) - 1
+
+
+'''ANNUITIES'''
 
 
 def v(i): # Discount factor
@@ -73,4 +89,22 @@ def FV_deferred_annuity(P, i, n, m, due=False):
     return ((1 + i)**m) * FV_annuity(P, i, n, due)
 
 
-Perpetuity_value(1000, 0.1, 10)
+'''LOANS'''
+
+
+def Repayment (L,i,n):
+    numerator = L
+    denominator = PV_annuity(1, i, n)
+    return numerator / denominator
+
+
+def Capital_outstanding (X,i,n,r):
+    return X * PV_annuity(1, i, n-r)
+
+
+def Capital_content (X,i,n,r):
+    return i * X * PV_annuity(1, i, n+1-r)
+
+
+def Interest_content (X,i,n,r):
+    return X - (i * X * PV_annuity(1, i, n+1-r))
