@@ -107,4 +107,4 @@ def Capital_content (X,i,n,r):
 
 
 def Interest_content (X,i,n,r):
-    return X - (i * X * PV_annuity(1, i, n+1-r))
+    return X - Capital_content(X, i, n, r)
