@@ -108,3 +108,16 @@ def Capital_content (X,i,n,r):
 
 def Interest_content (X,i,n,r):
     return X - Capital_content(X, i, n, r)
+
+
+'''YEILDS'''
+
+
+def Linear_interpolation(A,B,func):
+    def f(x):
+        return eval(func, {"x": x})
+    fA = f(A)
+    fB = f(B)
+    return ((0-fB)/(fA-fB))*(A-B) + B
+
+Linear_interpolation(0.03, 0.04, "1000000 * (1 + (1+x)**-1 + (1+x)**-2) + ((1+x)**-4) * ((1 - (1+x)**-20) / x) * 250000")
