@@ -60,6 +60,18 @@ def FV_annuity(P, i, n, due=False):
     return P * (numerator / denominator) * factor
 
 
+def PV_increasing_annuity(P, i, n, due=False):
+    A = PV_annuity(1, i, n, due=True)  # Use annuity-due formula as base for both
+    denominator = d(i) if due else i
+    return P * (A - n * v(i) ** n) / denominator
+
+
+def FV_increasing_annuity(P, i, n, due=False):
+    S = FV_annuity(1, i, n, due=True)  # Always use due formula for base
+    denominator = d(i) if due else i
+    return P * (S - n) / denominator
+
+
 def PV_growing_annuity(P, i, g, n):
     if i == g:
         return P * n  # Handle case where i = g
@@ -121,3 +133,7 @@ def Linear_interpolation(A,B,func):
     return ((0-fB)/(fA-fB))*(A-B) + B
 
 Linear_interpolation(0.03, 0.04, "1000000 * (1 + (1+x)**-1 + (1+x)**-2) + ((1+x)**-4) * ((1 - (1+x)**-20) / x) * 250000")
+
+FV_annuity(1, 0.075, 8, due=True)
+
+PV_growing_annuity(15000, 0.08, 0.03,40)
