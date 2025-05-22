@@ -134,6 +134,7 @@ def Linear_interpolation(A,B,func):
 
 Linear_interpolation(0.03, 0.04, "1000000 * (1 + (1+x)**-1 + (1+x)**-2) + ((1+x)**-4) * ((1 - (1+x)**-20) / x) * 250000")
 
-FV_annuity(1, 0.075, 8, due=True)
+PV_annuity(1, 0.07, 180)
 
 PV_growing_annuity(15000, 0.08, 0.03,40)
+Repayment(30000, 0.07, 180)
